@@ -1,0 +1,17 @@
+INSERT INTO personajes (nombre, apodo, edad, trabajo) VALUES ('Antonio Recio', 'Rancio', 55, 'Mayorista');
+INSERT INTO personajes (nombre, apodo, edad, trabajo) VALUES ('Jorge Calatrava', 'Coque', 50, 'Conserje');
+INSERT INTO personajes (nombre, apodo, edad, trabajo) VALUES ('Enrique Pastor', 'Papuchi', 55, 'Concejal de juventud y tiempo libre');
+INSERT INTO personajes (nombre, apodo, edad, trabajo) VALUES ('Amador Rivas', 'EL Cuqui', 45, 'Limpiacacas');
+INSERT INTO personajes (nombre, apodo, edad, trabajo) VALUES ('Berta Escobar', 'Sor Quisquilla', 50, 'Ama de casa');
+INSERT INTO personajes (nombre, apodo, edad, trabajo) VALUES ('Vicente Maroto', 'Hombre Cojín', 68, 'Jubilado');
+INSERT INTO personajes (nombre, apodo, edad, trabajo) VALUES ('Judith Becker', 'Guarrilla pelirroja', 35, 'Psicóloga');
+INSERT INTO personajes (nombre, apodo, edad, trabajo) VALUES ('Lola', 'Chiguagua', 42, 'Actriz');
+INSERT INTO personajes (nombre, apodo, edad, trabajo) VALUES ('Javier Maroto', 'Pelocho', 43, 'Informático');
+INSERT INTO personajes (nombre, apodo, edad, trabajo) VALUES ('Araceli', 'Bollera mística', 57, 'Antigua trabajadora de la peluquería');
+INSERT INTO personajes (nombre, apodo, edad, trabajo) VALUES ('Raquel Villanueva', 'Rubia', 38, 'Administradora de la finca');
+INSERT INTO personajes (nombre, apodo, edad, trabajo) VALUES ('Fermín Trujillo', 'Espetero playero', 55, 'Espetero');
+INSERT INTO personajes (nombre, apodo, edad, trabajo) VALUES ('Estela Reynolds', 'Pechotes', 56, 'Actriz');
+INSERT INTO personajes (nombre, apodo, edad, trabajo) VALUES ('Maxi', 'Mente fría', 60, 'Camarero');
+INSERT INTO personajes (nombre, apodo, edad, trabajo) VALUES ('Julián Pastor', 'Frigoyayo', 72, 'Jubilado');
+INSERT INTO personajes (nombre, apodo, edad, trabajo) VALUES ('Leonardo Romaní', 'Friki', 37, 'Comercial de aspiradoras');
+INSERT INTO personajes (nombre, apodo, edad, trabajo) VALUES ('Gregoria', 'Doña croqueta', 63, 'Ama de casa');
