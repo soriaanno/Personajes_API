@@ -25,7 +25,7 @@ public class PersonajesAPIRest {
         // Configura el puerto
         int port = puerto != null ?
                 Integer.parseInt(puerto) :
-                Integer.parseInt(puerto);
+                9090;
 // Configura el puerto
         Spark.port(port);
 
