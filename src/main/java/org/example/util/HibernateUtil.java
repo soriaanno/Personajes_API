@@ -35,10 +35,17 @@ public class HibernateUtil {
                     }
                 }
 
+                System.out.println("DB URL: " + dbUrl);
+                System.out.println("DB User: " + dbUser);
+                System.out.println("DB Password: " + dbPassword);
+
+
                 // Configurar propiedades de Hibernate
                 properties.put("hibernate.connection.url", dbUrl);
                 properties.put("hibernate.connection.username", dbUser);
                 properties.put("hibernate.connection.password", dbPassword);
+
+
 
                 // Otras configuraciones de Hibernate
                 properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
