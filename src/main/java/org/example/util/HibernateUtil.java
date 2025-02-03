@@ -7,6 +7,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+
 import java.util.Properties;
 
 public class HibernateUtil {
@@ -17,30 +18,29 @@ public class HibernateUtil {
             try {
                 Properties properties = new Properties();
 
-                // Obtener variables de entorno
+                // Obtener variables de entorno o valores por defecto
                 String dbUrl = System.getenv("DATABASE_URL");
                 String dbUser = System.getenv("DATABASE_USER");
                 String dbPassword = System.getenv("DATABASE_PASSWORD");
 
                 // Si no hay variables de entorno, intentar cargar desde .env
+                if (dbUrl == null || dbUser == null || dbPassword == null) {
                     try {
-                        Dotenv dotenv = Dotenv.configure().directory("./").load();
+                        Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
                         dbUrl = dotenv.get("DATABASE_URL");
                         dbUser = dotenv.get("DATABASE_USER");
                         dbPassword = dotenv.get("DATABASE_PASSWORD");
                     } catch (Exception e) {
-
+                        throw new RuntimeException("No se pudieron cargar las variables de entorno");
                     }
-
-                // Imprimir valores para depuración
-                System.out.println("DB URL: " + dbUrl);
-                System.out.println("DB User: " + dbUser);
-                System.out.println("DB Password: " + dbPassword);
+                }
 
                 // Configurar propiedades de Hibernate
                 properties.put("hibernate.connection.url", dbUrl);
                 properties.put("hibernate.connection.username", dbUser);
                 properties.put("hibernate.connection.password", dbPassword);
+
+                // Otras configuraciones de Hibernate
                 properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
                 properties.put("hibernate.show_sql", "true");
                 properties.put("hibernate.hbm2ddl.auto", "update");

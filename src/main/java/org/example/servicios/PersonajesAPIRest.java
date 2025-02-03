@@ -1,10 +1,15 @@
 package org.example.servicios;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.example.dao.PersonajesDAOInterface;
+import org.example.dao.PersonajesDao;
 import org.example.entidades.Personajes;
 import spark.Spark;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PersonajesAPIRest {
@@ -12,64 +17,110 @@ public class PersonajesAPIRest {
     private Gson gson = new Gson();
 
     public PersonajesAPIRest(PersonajesDAOInterface implementacion){
-        Spark.port(9090);
+
+        String puerto = System.getenv("PORT");
+
+        // Configura el puerto
+        int port = puerto != null ?
+                Integer.parseInt(puerto) :
+                Integer.parseInt(puerto);
+        Spark.port(port);
 
         dao = implementacion;
 
-        // Endpoint para obtener todos los jugadores
+        //endpoint para obtener todos los personajes
         Spark.get("/personajes", (request, response) -> {
-            List<Personajes> personajes = dao.devolverTodos();
+            List<Personajes> personaje = dao.devolverTodos();
             response.type("application/json");
-            return gson.toJson(personajes);
+            response.status(200);
+            return createJsonResponse("200", personaje);
         });
 
-        // Endpoint para obtener un jugador por su id
-        Spark.get("/personajes/id/:id", (request, response) -> {
+        //endpoint para obtener un personajes por su id
+        Spark.get("personaje/id/:id", (request, response) -> {
             Long id = Long.parseLong(request.params(":id"));
-            Personajes personajes = dao.buscarPorId(id);
+            Personajes personaje = dao.buscarPorId(id);
             response.type("application/json");
-            if (personajes != null) {
-                return gson.toJson(personajes);
-            } else {
+            List<Personajes> personajeList = new ArrayList<>();
+            if(personaje != null){
+                personajeList.add(personaje);
+                response.status(200);
+                return createJsonResponse("200", personajeList);
+            }else{
                 response.status(404);
-                return "personajes no encontrado";
+                return createJsonResponse("Personaje no encontrado", personajeList);
             }
         });
 
-        // Endpoint para crear un nuevo personajes
         Spark.post("/personajes", (request, response) -> {
             String body = request.body();
+            //TODO comprobar si han llegado los datos correctos
             Personajes nuevoPersonaje = gson.fromJson(body, Personajes.class);
+
+            //TODO comprobar si se creado el nuevoPersonaje
             Personajes creado = dao.create(nuevoPersonaje);
+
             response.type("application/json");
-            return gson.toJson(creado);
+            List<Personajes> personajeList = new ArrayList<>();
+            personajeList.add(creado);
+            response.status(200);
+            return createJsonResponse("200", personajeList);
         });
 
-        // Endpoint para actualizar un personaje
-        Spark.put("/personajes/id/:id", (request, response) -> {
-            long id = Long.parseLong(request.params(":id"));
+        Spark.put("personajes/id/:id", (request, response) -> {
+            Long id = Long.parseLong(request.params(":id"));
+            //TODO comprobar si han llegado los datos correctos
             String body = request.body();
             Personajes personajeActualizado = gson.fromJson(body, Personajes.class);
             personajeActualizado.setId(id);
+            List<Personajes> personajeList = new ArrayList<>();
             Personajes actualizado = dao.actualizar(personajeActualizado);
-            if (actualizado != null) {
-                return gson.toJson(actualizado);
-            } else {
+            response.type("application/json");
+            if(actualizado != null){
+
+                personajeList.add(actualizado);
+                response.status(200);
+                return createJsonResponse("200", personajeList);
+            }else{
                 response.status(404);
-                return "No se ha podido actualizar el personaje";
+                return createJsonResponse("No se ha podido realizar la actualización", personajeList);
             }
         });
 
-        // Endpoint para eliminar un personaje
         Spark.delete("/personajes/id/:id", (request, response) -> {
-            long id = Long.parseLong(request.params(":id"));
+            Long id = Long.parseLong(request.params(":id"));
             boolean eliminado = dao.deleteById(id);
             response.type("application/json");
-            if (eliminado) {
-                return "personaje eliminado";
-            } else {
-                return "No se pudo eliminar el personaje";
+            List<Personajes> personajeList = new ArrayList<>();
+            if(eliminado){
+                response.status(200);
+                return createJsonResponse("Mueble eliminado correctamente", personajeList);
+            }else{
+                response.status(404);
+                return createJsonResponse("No se puedo realizar la eliminación", personajeList);
             }
         });
+    }
+
+//    public String createJsonResponse(String status, String message) {
+//        Gson gson = new Gson();
+//
+//        JsonObject jsonResponse = new JsonObject();
+//        jsonResponse.addProperty("status", status);
+//        jsonResponse.addProperty("message", message);
+//        return gson.toJson(jsonResponse);
+//    }
+
+    public String createJsonResponse(String status, List<Personajes> messages) {
+        Gson gson = new Gson();
+
+        JsonObject jsonResponse = new JsonObject();
+        jsonResponse.addProperty("status", status);
+
+        // Convertir la lista de objetos a JsonArray
+        JsonArray messageArray = gson.toJsonTree(messages).getAsJsonArray();
+        jsonResponse.add("message", messageArray);
+
+        return gson.toJson(jsonResponse);
     }
 }

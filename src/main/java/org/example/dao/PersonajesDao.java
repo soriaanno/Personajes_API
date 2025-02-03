@@ -61,9 +61,8 @@ public class PersonajesDao implements PersonajesDAOInterface {
         } catch (PersistenceException e) {
             e.printStackTrace();
             session.getTransaction().rollback();
-        } finally {
-            session.close();
         }
+            session.close();
         return personaje;
     }
 
