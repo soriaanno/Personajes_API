@@ -1,1 +1,1 @@
-web: java -jar target/proyectoTrimestre-1.0-SNAPSHOT.jar
+web: java -jar target/proyecto_trimestre-1.0-SNAPSHOT.jar
