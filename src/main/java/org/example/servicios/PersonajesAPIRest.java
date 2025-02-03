@@ -34,20 +34,20 @@ public class PersonajesAPIRest {
 
 
         //endpoint para obtener todos los personajes
-        Spark.get("/*", (request, response) -> {
-            //List<Personajes> personaje = dao.devolverTodos();
-            //response.type("application/json");
-            response.status(200);
-            return "hola mundo";
-        });
-
-        //endpoint para obtener todos los personajes
-        //Spark.get("/personajes", (request, response) -> {
+        //Spark.get("/*", (request, response) -> {
             //List<Personajes> personaje = dao.devolverTodos();
             //response.type("application/json");
             //response.status(200);
-            //return createJsonResponse("200", personaje);
+           // return "hola mundo";
         //});
+
+        //endpoint para obtener todos los personajes
+        Spark.get("/personajes", (request, response) -> {
+            List<Personajes> personaje = dao.devolverTodos();
+            response.type("application/json");
+            response.status(200);
+            return createJsonResponse("200", personaje);
+        });
 
         //endpoint para obtener un personajes por su id
         Spark.get("personaje/id/:id", (request, response) -> {
