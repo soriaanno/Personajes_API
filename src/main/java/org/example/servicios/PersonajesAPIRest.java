@@ -22,15 +22,10 @@ public class PersonajesAPIRest {
         String puerto = System.getenv("PORT");
 
 // Si no se encuentra la variable de entorno PORT, usar un puerto por defecto (por ejemplo, 8080)
-        int port = 9090; // Valor por defecto
-        if (puerto != null && !puerto.isEmpty()) {
-            try {
-                port = Integer.parseInt(puerto);  // Intentamos convertir el valor de puerto
-            } catch (NumberFormatException e) {
-                System.err.println("El valor de PORT no es válido. Usando puerto por defecto.");
-            }
-        }
-
+        // Configura el puerto
+        int port = puerto != null ?
+                Integer.parseInt(puerto) :
+                Integer.parseInt(puerto);
 // Configura el puerto
         Spark.port(port);
 
