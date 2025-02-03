@@ -93,7 +93,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.example.Main</mainClass> <!-- Ajusta esto a tu clase principal -->
+                                    <mainClass>org.example.Main</mainClass> <!-- Asegúrate de que este sea tu clase principal -->
                                 </transformer>
                             </transformers>
                         </configuration>
