@@ -23,16 +23,14 @@ public class HibernateUtil {
                 String dbPassword = System.getenv("DATABASE_PASSWORD");
 
                 // Si no hay variables de entorno, intentar cargar desde .env
-                if (dbUrl == null || dbUser == null || dbPassword == null) {
                     try {
                         Dotenv dotenv = Dotenv.configure().directory("./").load();
                         dbUrl = dotenv.get("DATABASE_URL");
                         dbUser = dotenv.get("DATABASE_USER");
                         dbPassword = dotenv.get("DATABASE_PASSWORD");
                     } catch (Exception e) {
-                        throw new RuntimeException("No se pudieron cargar las variables de entorno");
+
                     }
-                }
 
                 // Imprimir valores para depuración
                 System.out.println("DB URL: " + dbUrl);
