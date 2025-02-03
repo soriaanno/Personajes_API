@@ -18,15 +18,25 @@ public class PersonajesAPIRest {
 
     public PersonajesAPIRest(PersonajesDAOInterface implementacion){
 
+        // Obtiene el valor de la variable de entorno PORT
         String puerto = System.getenv("PORT");
 
-        // Configura el puerto
-        int port = puerto != null ?
-                Integer.parseInt(puerto) :
-                Integer.parseInt(puerto);
+// Si no se encuentra la variable de entorno PORT, usar un puerto por defecto (por ejemplo, 8080)
+        int port = 9090; // Valor por defecto
+        if (puerto != null && !puerto.isEmpty()) {
+            try {
+                port = Integer.parseInt(puerto);  // Intentamos convertir el valor de puerto
+            } catch (NumberFormatException e) {
+                System.err.println("El valor de PORT no es válido. Usando puerto por defecto.");
+            }
+        }
+
+// Configura el puerto
         Spark.port(port);
 
+// Asigna la implementación del DAO
         dao = implementacion;
+
 
         //endpoint para obtener todos los personajes
         Spark.get("/personajes", (request, response) -> {
