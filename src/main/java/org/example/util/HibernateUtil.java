@@ -18,36 +18,32 @@ public class HibernateUtil {
             try {
                 Properties properties = new Properties();
 
-                // Obtener variables de entorno o valores por defecto
-                String dbUrl = System.getenv("DATABASE_URL");
-                String dbUser = System.getenv("DATABASE_USER");
-                String dbPassword = System.getenv("DATABASE_PASSWORD");
+                // Variables específicas de Railway
+                String host = System.getenv("MYSQLHOST");
+                String port = System.getenv("MYSQLPORT");
+                String database = System.getenv("MYSQLDATABASE");
+                String user = System.getenv("MYSQLUSER");
+                String password = System.getenv("MYSQLPASSWORD");
 
-                // Si no hay variables de entorno, intentar cargar desde .env
-                if (dbUrl == null || dbUser == null || dbPassword == null) {
-                    try {
-                        Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
-                        dbUrl = dotenv.get("DATABASE_URL");
-                        dbUser = dotenv.get("DATABASE_USER");
-                        dbPassword = dotenv.get("DATABASE_PASSWORD");
-                    } catch (Exception e) {
-                        throw new RuntimeException("No se pudieron cargar las variables de entorno");
-                    }
+                // Construir URL de conexión
+                String dbUrl = String.format("jdbc:mysql://%s:%s/%s", host, port, database);
+
+                // Si no hay variables de Railway, intentar con las variables generales
+                if (host == null || port == null) {
+                    dbUrl = System.getenv("DATABASE_URL");
+                    user = System.getenv("DATABASE_USER");
+                    password = System.getenv("DATABASE_PASSWORD");
                 }
 
-                System.out.println("DB URL: " + dbUrl);
-                System.out.println("DB User: " + dbUser);
-                System.out.println("DB Password: " + dbPassword);
-
+                // Verificar que tenemos las credenciales necesarias
+                if (dbUrl == null || user == null || password == null) {
+                    throw new RuntimeException("Faltan variables de entorno necesarias para la conexión a la base de datos");
+                }
 
                 // Configurar propiedades de Hibernate
                 properties.put("hibernate.connection.url", dbUrl);
-                properties.put("hibernate.connection.username", dbUser);
-                properties.put("hibernate.connection.password", dbPassword);
-
-
-
-                // Otras configuraciones de Hibernate
+                properties.put("hibernate.connection.username", user);
+                properties.put("hibernate.connection.password", password);
                 properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
                 properties.put("hibernate.show_sql", "true");
                 properties.put("hibernate.hbm2ddl.auto", "update");
@@ -57,7 +53,7 @@ public class HibernateUtil {
                         .build();
 
                 sessionFactory = new MetadataSources(registry)
-                        .addAnnotatedClass(Personajes.class) // Asegúrate de incluir todas tus clases de entidad
+                        .addAnnotatedClass(Personajes.class)
                         .buildMetadata()
                         .buildSessionFactory();
 
