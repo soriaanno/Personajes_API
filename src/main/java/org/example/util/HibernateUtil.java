@@ -46,7 +46,7 @@ public class HibernateUtil {
                 properties.put("hibernate.connection.password", password);
                 properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
                 properties.put("hibernate.show_sql", "true");
-                properties.put("hibernate.hbm2ddl.auto", "update");
+                properties.put("hibernate.hbm2ddl.auto", "create");
 
                 StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                         .applySettings(properties)
